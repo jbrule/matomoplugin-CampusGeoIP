@@ -29,8 +29,6 @@ class CampusGeoIP extends \Piwik\Plugin
 	const START_OFFSET = 1;
     const UNRESOLVED_NOTE = "Not Found";
 
-	private $datasetCount = 0;
-	private $datasetCurrentIndex = 0;
     private $console;
     
 	public function __construct()
@@ -40,14 +38,19 @@ class CampusGeoIP extends \Piwik\Plugin
         parent::__construct();
     }
     
+    public function isTrackerPlugin()
+    {
+        return true;
+    }
+    
     public function setOutput($output){
         $this->console->setOutput($output);
     }
     
 	public function deactivate()
 	{
-		// switch to default provider if CloudflareLocationProvider was in use
-		if (LocationProvider::getCurrentProvider() instanceof \Piwik\Plugins\CampusGeoIP\LocationProvider\CampusGeoIP) {
+		// switch to default provider
+		if (LocationProvider::getCurrentProvider() instanceof \Piwik\Plugins\CampusGeoIP\LocationProvider\CampusGeoIPLocationProvider) {
 			LocationProvider::setCurrentProvider(LocationProvider\DefaultProvider::ID);
 		}
 	}
@@ -112,7 +115,12 @@ class CampusGeoIP extends \Piwik\Plugin
 	}
 
 	private function updateNetworkData($delimitedData){
-
+        
+        $datasetCount = 0;
+        $datasetCurrentIndex = 0;
+        $importTime = Date::now();
+		$campusCodes = [];
+    
 		$importedLines = explode(PHP_EOL,$delimitedData);
 
 		if(count($importedLines) === 0){
@@ -129,13 +137,10 @@ class CampusGeoIP extends \Piwik\Plugin
 				return sprintf("`%s`=VALUES(`%s`)",$column_key,$column_key);
 				},array_merge(array_keys($this::DATA_COLUMN_MAP),["ts_last_edit","ts_removed"])));
 
-		$this->datasetCount = count($importedLines) - $this::START_OFFSET;
+		$datasetCount = count($importedLines) - $this::START_OFFSET;
 
-		$importTime = Date::now();
-		$campusCodes = [];
-
-		for($i = $this::START_OFFSET; $i <= $this->datasetCount; $i++){
-			$this->datasetCurrentIndex = $i;
+		for($i = $this::START_OFFSET; $i <= $datasetCount; $i++){
+			$datasetCurrentIndex = $i;
 
 			$explodedLine = explode($this::DELIMITER,$importedLines[$i]);
 
@@ -161,7 +166,7 @@ class CampusGeoIP extends \Piwik\Plugin
 			VALUES (" . Common::getSqlStringFieldsArray($associativeLine) . ")
 			ON DUPLICATE KEY UPDATE $updateClause";
 
-			$message = sprintf("Processing %d of %d networks	%d%%", $i, $this->datasetCount, round($i / $this->datasetCount * 100,0));
+			$message = sprintf("Processing %d of %d networks	%d%%", $i, $datasetCount, round($i / $datasetCount * 100,0));
 
 			$this->console->write("\x0D", false);
             $this->console->write($message, false);

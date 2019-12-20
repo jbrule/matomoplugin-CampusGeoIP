@@ -16,16 +16,19 @@ use Piwik\Plugins\CampusGeoIP\CampusGeoIP;
 
 class CampusGeoIPLocationProvider extends LocationProvider
 {
+    const ID = "campusgeoip";
+    const TITLE = "Campus Geo IP";
+    
     public function getLocation($info)
     {
-        $ipAddress = $info['ip'];
+        $ipAddress = $this->getIpFromInfo($info);
         
         $ipAddressMatch = CampusGeoIP::findMatch($ipAddress);
         
         //No match. Return unpopulated location,
         if($ipAddressMatch === false){
             $location = [];
-            self::completeLocationResult($location);
+            $this->completeLocationResult($location);
             return $location;
         }
         
@@ -38,6 +41,7 @@ class CampusGeoIPLocationProvider extends LocationProvider
             self::ISP_KEY => $ipAddressMatch["provider"],
             self::ORG_KEY => $ipAddressMatch["org"],
         ];
+                
         $this->completeLocationResult($location);
         return $location;
     }
@@ -68,8 +72,8 @@ class CampusGeoIPLocationProvider extends LocationProvider
     public function getInfo()
     {
         return array(
-            'id' => 'campusgeoip',
-            'title' => 'Campus Geo IP',
+            'id' => self::ID,
+            'title' => self::TITLE,
             'description' => 'This location provider is designed to geolocate ips across a campus in an intranet type environment',
             'order' => 4
         );

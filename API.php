@@ -23,8 +23,19 @@ class API extends \Piwik\Plugin\API
     {				
 		$ipAddresses = explode(",",$ips);
 		
-		$table = DataTable::makeFromSimpleArray(CampusGeoIP::findMatches($ipAddresses));
-		
-        return $table;
+        $ipData = CampusGeoIP::findMatches($ipAddresses);
+        
+        //Avoid sumArrayRow error
+        if (!empty($ipData[0])) {
+            $columnsToNotAggregate = array_map(function () {
+                return 'skip';
+            }, $ipData[0]);
+        }
+        
+		$dataTable = DataTable::makeFromSimpleArray($ipData);
+        
+        $dataTable->setMetadata(DataTable::COLUMN_AGGREGATION_OPS_METADATA_NAME, $columnsToNotAggregate); 
+        		
+        return $dataTable;
     }
 }
