@@ -23,23 +23,23 @@ class CampusGeoIPLocationProvider extends LocationProvider
     {
         $ipAddress = $this->getIpFromInfo($info);
         
-        $ipAddressMatch = CampusGeoIP::findMatch($ipAddress);
+        $networkMatch = CampusGeoIP::findMatch($ipAddress);
         
         //No match. Return unpopulated location,
-        if($ipAddressMatch === false){
+        if(!$networkMatch->isValid()){
             $location = [];
             $this->completeLocationResult($location);
             return $location;
         }
         
         $location = [
-            self::COUNTRY_CODE_KEY => $ipAddressMatch["country"],
-            self::REGION_CODE_KEY => $ipAddressMatch["region"],
-            self::CITY_NAME_KEY  => $ipAddressMatch["city"],
-            self::LATITUDE_KEY => $ipAddressMatch["latitude"],
-            self::LONGITUDE_KEY => $ipAddressMatch["longitude"],
-            self::ISP_KEY => $ipAddressMatch["provider"],
-            self::ORG_KEY => $ipAddressMatch["org"],
+            self::COUNTRY_CODE_KEY => $networkMatch->country,
+            self::REGION_CODE_KEY => $networkMatch->region,
+            self::CITY_NAME_KEY  => $networkMatch->city,
+            self::LATITUDE_KEY => $networkMatch->latitude,
+            self::LONGITUDE_KEY => $networkMatch->longitude,
+            self::ISP_KEY => $networkMatch->provider,
+            self::ORG_KEY => $networkMatch->org,
         ];
                 
         $this->completeLocationResult($location);

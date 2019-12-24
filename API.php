@@ -8,8 +8,7 @@
 
 namespace Piwik\Plugins\CampusGeoIP;
 
-use Piwik\DataTable;
-use Piwik\DataTable\Row;
+use Piwik\Piwik;
 use Piwik\Plugins\CampusGeoIP\CampusGeoIP;
 
 /**
@@ -19,23 +18,14 @@ use Piwik\Plugins\CampusGeoIP\CampusGeoIP;
  */
 class API extends \Piwik\Plugin\API
 {
-    public function geoLocate($ips = "")
-    {				
+    public function getLocationFromIP($ips = "")
+    {
+        Piwik::checkUserHasSomeViewAccess();
+        
 		$ipAddresses = explode(",",$ips);
 		
         $ipData = CampusGeoIP::findMatches($ipAddresses);
-        
-        //Avoid sumArrayRow error
-        if (!empty($ipData[0])) {
-            $columnsToNotAggregate = array_map(function () {
-                return 'skip';
-            }, $ipData[0]);
-        }
-        
-		$dataTable = DataTable::makeFromSimpleArray($ipData);
-        
-        $dataTable->setMetadata(DataTable::COLUMN_AGGREGATION_OPS_METADATA_NAME, $columnsToNotAggregate); 
-        		
-        return $dataTable;
+                		
+        return $ipData;
     }
 }

@@ -16,6 +16,7 @@ use Piwik\DbHelper;
 use Piwik\Network\IP;
 use Piwik\Network\IPUtils;
 use Piwik\Plugins\UserCountry\LocationProvider;
+use Piwik\Plugins\CampusGeoIP\Network;
 use Piwik\Plugins\CampusGeoIP\Console;
 
 class CampusGeoIP extends \Piwik\Plugin
@@ -198,16 +199,20 @@ class CampusGeoIP extends \Piwik\Plugin
         
 		$testIps = array_map(function($row){ return $row["ip"];},$testResult);
 
+        $startTime = time();
+        
 		$matches = self::findMatches($testIps, $this->console);
         
         $this->console->write($matches);
+        
+        $this->console->write(sprintf("Query Time: %d seconds",time() - $startTime));
         
         $unresolvedIps = array_map(function($result){
             return $result["ip"];
             },
             array_filter($matches,
                 function($result){
-                    return ($result["note"] === self::UNRESOLVED_NOTE);
+                    return (!$result->isValid());
                 }
             )
         );
@@ -262,25 +267,18 @@ class CampusGeoIP extends \Piwik\Plugin
 		}
 
 		$iter = 0;
-		$startTime = time();
 
 		$results = [];
 
 		foreach($ipAddresses as $ipAddress){
 			$iter++;
 
-			$ipResult = [];
-
-            $ipQueryResult = self::findMatch($ipAddress);
-
-			$results[] = ($ipQueryResult)? array_merge($ipResult,$ipQueryResult) : array_merge($ipResult,["ip" => $ipAddress, "note" => self::UNRESOLVED_NOTE]);
+            $results[] = self::findMatch($ipAddress);
 
 			$message = sprintf("Processing %d of %d matches	%d%%", $iter, $matchCount, round($iter / $matchCount * 100,0));
 			$console->write("\x0D", false);
             $console->write($message, false);
 		}
-
-		$console->write(sprintf("Query Time: %d seconds",time() - $startTime));
 
 		return $results;
     }
@@ -296,7 +294,9 @@ class CampusGeoIP extends \Piwik\Plugin
 				WHERE ts_removed IS NULL AND ? BETWEEN n.network_start AND n.network_end ORDER BY n.network_start DESC, n.network_end ASC LIMIT 1",
 				Common::prefixTable(self::TBL_NETWORKS), Common::prefixTable(self::TBL_LOCATIONS));
 
-		return Db::fetchRow($querySelect,[$ipAddress,$binIpAddress]);
+        $result = Db::fetchRow($querySelect,[$ipAddress,$binIpAddress]) ?: ["ip" => $ipAddress, "note" => self::UNRESOLVED_NOTE];
+        
+        return new Network($result);
     }
     
     
