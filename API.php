@@ -9,6 +9,7 @@
 namespace Piwik\Plugins\CampusGeoIP;
 
 use Piwik\Piwik;
+use Piwik\DataTable;
 use Piwik\Plugins\CampusGeoIP\CampusGeoIP;
 
 /**
@@ -25,7 +26,22 @@ class API extends \Piwik\Plugin\API
 		$ipAddresses = explode(",",$ips);
 		
         $ipData = CampusGeoIP::findMatches($ipAddresses);
-                		
-        return $ipData;
+        
+        $ipDataArray = array_map(function($entry){
+            return (array)$entry;
+        },$ipData);
+        
+        //Avoid sumArrayRow error
+        if (!empty($ipDataArray[0])) {
+            $columnsToNotAggregate = array_map(function () {
+                return 'skip';
+            }, $ipDataArray[0]);
+        }
+        
+		$dataTable = DataTable::makeFromSimpleArray($ipDataArray);
+        
+        $dataTable->setMetadata(DataTable::COLUMN_AGGREGATION_OPS_METADATA_NAME, $columnsToNotAggregate); 
+        		
+        return $dataTable;
     }
 }
