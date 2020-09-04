@@ -1,10 +1,10 @@
 {
     "name": "CampusGeoIP",
     "description": "This location provider is designed to geolocate ips across a campus in an intranet type environment",
-    "version": "3.0.0",
+    "version": "4.0.0",
     "theme": false,
     "require": {
-        "piwik": ">=3.11.0-stable,<4.0.0-b1"
+        "matomo": ">=4.0.0-b1,<5.0.0-b1"
     },
     "authors": [
         {
