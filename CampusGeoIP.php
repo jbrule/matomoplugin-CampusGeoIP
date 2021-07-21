@@ -206,9 +206,9 @@ class CampusGeoIP extends \Piwik\Plugin
         $this->console->write($matches);
         
         $this->console->write(sprintf("Query Time: %d seconds",time() - $startTime));
-        
+
         $unresolvedIps = array_map(function($result){
-            return $result["ip"];
+            return $result->ip;
             },
             array_filter($matches,
                 function($result){
