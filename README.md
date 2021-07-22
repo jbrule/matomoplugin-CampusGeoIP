@@ -6,7 +6,7 @@ Custom Geo IP resolver that was designed to resolve private IP space across many
 
 * Used in production on a LAN with 23,000+ defined networks across 95 locations
 * Supports custom IP networks
-* IPv6 ready
+* IPv6 ready (not production tested)
 * Includes bulk IP resolution API
 * Includes a testing function that harvests IPs from vistor log
 * GeoIP database resides in MySQL/MariaDB
@@ -14,7 +14,7 @@ Custom Geo IP resolver that was designed to resolve private IP space across many
 ## Install Instructions
 The easiest way to install is to find the plugin in the [Matomo Marketplace](https://plugins.matomo.org/).
 
-Then import your data. See [docs/index.md]
+Then import your data. See [docs/index.md](docs/index.md)
 
 ## License
 GPL v3 / fair use
