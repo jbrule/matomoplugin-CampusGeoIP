@@ -25,11 +25,25 @@ class CampusGeoIPLocationProvider extends LocationProvider
         
         $networkMatch = CampusGeoIP::findMatch($ipAddress);
         
-        //No match. Return unpopulated location,
+        //No match
         if(!$networkMatch->isValid()){
             $location = [];
-            $this->completeLocationResult($location);
-            return $location;
+			// First try the fallback provider
+			$settings = new \Piwik\Plugins\CampusGeoIP\SystemSettings();
+			$fallback = $settings->useFallback->getValue();
+			if($fallback && $fallback!=='default'){
+				$provider = $this->getProviderById($fallback);
+			}else{
+				$provider = null;
+			}
+			
+			if ($provider){
+				return $provider->getLocation($info);	
+			} else {
+				// Return unpopulated location,
+				$this->completeLocationResult($location);
+				return $location;
+			}
         }
         
         $location = [
