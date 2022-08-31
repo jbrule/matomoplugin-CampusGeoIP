@@ -4,7 +4,7 @@ This is a Location Provider plugin that supports GeoIP resolution for configured
 
 Upon install this plugin creates two table in the database 
 * ```campusgeoip_locations``` - this table needs to be populated directly (Sequel Ace, phpMyAdmin) as there is no UI built to do that. ![Locations Table](/screenshots/locations.png)
-* ```campusgeoip_networks``` - this table is populated and maintained using the following console command  ```./console CampusGeoIP:update-networks http://<yournetworkdata>```
+* ```campusgeoip_networks``` - this table is populated and maintained using the following console command  ```./console campusgeoip:update-networks http://<yournetworkdata>```
 
 
 Make sure your campus and CampusCode fields match across the locations table and network data as that is what the join is preformed on.
