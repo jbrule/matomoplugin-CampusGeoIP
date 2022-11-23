@@ -100,26 +100,43 @@ class CampusGeoIP extends \Piwik\Plugin
 	}
 
 	public function importNetworksFromSource($importLocation){
-				
-		if($importLocation = filter_var($importLocation,FILTER_VALIDATE_URL,[FILTER_FLAG_SCHEME_REQUIRED,FILTER_FLAG_HOST_REQUIRED,FILTER_FLAG_PATH_REQUIRED])){
 
-			$httpResponse = HTTP::fetchRemoteFile($importLocation);
+		// Handle Url
+		if($importLocationUrl = filter_var($importLocation,FILTER_VALIDATE_URL)){
+
+			$httpResponse = HTTP::fetchRemoteFile($importLocationUrl);
             
 			if($httpResponse !== false){
 				$this->updateNetworkData($httpResponse);
 			}else{
 				$this->console->write("Failed to get data file");
 			}
+
+		}
+		// Handle File
+		else if(is_file($importLocation)){
+
+			$this->console->write("Detected Local File Exists. Attempting Import...");
+		 	
+			try{
+				$fileContent = file_get_contents($importLocation);
+				$this->updateNetworkData($fileContent);
+			}
+			catch(Exception $err){
+				$this->console->write("Failed to load the data file");
+				$this->console->write($err.getMessage());
+			}
+
 		}else{
-            $this->console->write("Provided location failed to validate");
-        }
+			$this->console->write("Provided location failed to validate");
+		}
 	}
 
 	private function updateNetworkData($delimitedData){
         
-        $datasetCount = 0;
-        $datasetCurrentIndex = 0;
-        $importTime = Date::now();
+		$datasetCount = 0;
+		$datasetCurrentIndex = 0;
+		$importTime = Date::now();
 		$campusCodes = [];
     
 		$importedLines = explode(PHP_EOL,$delimitedData);
@@ -129,7 +146,7 @@ class CampusGeoIP extends \Piwik\Plugin
 			return false;
 		}
 
-		if($this->isFormatValid($importedLines[0])){
+		if(!$this->isFormatValid($importedLines[0])){
 			$this->console->write("File format is invalid");
 			return false;
 		}
@@ -170,7 +187,7 @@ class CampusGeoIP extends \Piwik\Plugin
 			$message = sprintf("Processing %d of %d networks	%d%%", $i, $datasetCount, round($i / $datasetCount * 100,0));
 
 			$this->console->write("\x0D", false);
-            $this->console->write($message, false);
+			$this->console->write($message, false);
 
 			Db::query($queryInsert,array_values($associativeLine));
 
@@ -245,7 +262,7 @@ class CampusGeoIP extends \Piwik\Plugin
 	}
 
 	private function isFormatValid($header){
-		return ($header === self::COLUMN_TEMPLATE);
+		return (trim($header) === trim(self::COLUMN_TEMPLATE));
 	}
     
     public static function findMatches($ipAddresses = [], $console = null){

@@ -1,5 +1,8 @@
 ## Changelog
 
+# 4.1.0
+Added support for importing networks data from local file system.
+
 # 4.0.1
 Screenshot Correction
 

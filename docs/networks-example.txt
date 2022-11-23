@@ -1,0 +1,5 @@
+NetworkFirstAsInteger|NetworkLastAsInteger|NetworkAsInteger|NetworkWithCIDR|NetworkAddress|NetworkCIDR|NetworkMask|NetworkHostCount|NetworkComment|Region|CampusCode|BuildingCode|FloorCode|Use|Disabled
+|||192.168.10.0/24|||||Main House|MD|MH|H|Main||false
+|||192.168.12.0/24|||||Tree House|MD|TH|H|Main||false
+|||192.168.11.0/24|||||Lake House|MD|LH|H|Main||false
+|||172.20.1.30/32|||||Home Office|MD|HO|H|Main||false
