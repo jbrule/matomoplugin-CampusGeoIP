@@ -153,18 +153,18 @@ class CampusGeoIP extends \Piwik\Plugin
 
 		$updateClause = join(",", array_map(function($column_key){
 				return sprintf("`%s`=VALUES(`%s`)",$column_key,$column_key);
-				},array_merge(array_keys($this::DATA_COLUMN_MAP),["ts_last_edit","ts_removed"])));
+				},array_merge(array_keys(self::DATA_COLUMN_MAP),["ts_last_edit","ts_removed"])));
 
-		$datasetCount = count($importedLines) - $this::START_OFFSET;
+		$datasetCount = count($importedLines) - self::START_OFFSET;
 
-		for($i = $this::START_OFFSET; $i <= $datasetCount; $i++){
+		for($i = self::START_OFFSET; $i <= $datasetCount; $i++){
 			$datasetCurrentIndex = $i;
 
-			$explodedLine = explode($this::DELIMITER,$importedLines[$i]);
+			$explodedLine = explode(self::DELIMITER,$importedLines[$i]);
 
 			$associativeLine = [];
 
-			foreach($this::DATA_COLUMN_MAP as $destColumnKey => $sourceColumnIndex){
+			foreach(self::DATA_COLUMN_MAP as $destColumnKey => $sourceColumnIndex){
 				$associativeLine[$destColumnKey] = (!empty($explodedLine[$sourceColumnIndex]))? $explodedLine[$sourceColumnIndex] : null;
 			}
 
@@ -189,8 +189,15 @@ class CampusGeoIP extends \Piwik\Plugin
 			$this->console->write("\x0D", false);
 			$this->console->write($message, false);
 
-			Db::query($queryInsert,array_values($associativeLine));
-
+			try{
+				Db::query($queryInsert,array_values($associativeLine));
+			}
+			catch(Exception $err){
+				$this->console->write("An error occurred while trying to load the network data.");
+				$this->console->write($err.getMessage());
+				$this->console->write("[DEBUG] QUERY SQL:". var_export($queryInsert,true));
+				$this->console->write("[DEBUG] QUERY VALUES:". var_export($associativeLine,true));
+			}
 		}
 
 		$campusCodes = array_unique($campusCodes);
