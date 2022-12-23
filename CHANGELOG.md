@@ -1,5 +1,8 @@
 ## Changelog
 
+# 4.1.4
+Fixed network import bugs
+
 # 4.1.3
 Added debug information when exception occurrs on network data import
 
