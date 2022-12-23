@@ -139,7 +139,7 @@ class CampusGeoIP extends \Piwik\Plugin
 		$importTime = Date::now();
 		$campusCodes = [];
     
-		$importedLines = explode(PHP_EOL,$delimitedData);
+		$importedLines = array_filter(explode(PHP_EOL,$delimitedData));
 
 		if(count($importedLines) === 0){
 			$this->console->write("File Appears to be empty");
@@ -261,7 +261,7 @@ class CampusGeoIP extends \Piwik\Plugin
 
 		$queryUpdate = sprintf("UPDATE %s SET ts_removed = ? WHERE ts_last_edit < ? AND ts_removed IS NULL", Common::prefixTable(self::TBL_NETWORKS));
 
-		$removalResult = Db::query($queryUpdate, [$importTime,$importTime]);
+		$removalResult = Db::query($queryUpdate, [$importTime->getDatetime(),$importTime->getDatetime()]);
 
 		$message = sprintf("%d Networks were marked as removed",$removalResult->rowCount());
 
