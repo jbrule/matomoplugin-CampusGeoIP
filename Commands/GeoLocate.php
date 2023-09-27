@@ -17,28 +17,28 @@ use Piwik\Plugins\CampusGeoIP\CampusGeoIP;
 
 class GeoLocate extends ConsoleCommand
 {
+  
+  const IP_ARGUMENT = "ipaddresses";
+
+  protected function configure()
+  {
+    $this->setName('campusgeoip:geolocate');
+    $this->setDescription('Geo Locate IP Addresses (comma seperated)');
+    $this->addArgument(self::IP_ARGUMENT, InputArgument::REQUIRED, 'IP Addresses (csv)');
+  }
+
+  protected function execute(InputInterface $input, OutputInterface $output)
+  {
+    $csvIpAddresses = $input->getArgument(self::IP_ARGUMENT);
     
-    const IP_ARGUMENT = "ipaddresses";
-
-    protected function configure()
-    {
-        $this->setName('campusgeoip:geolocate');
-        $this->setDescription('Geo Locate IP Addresses (comma seperated)');
-        $this->addArgument(self::IP_ARGUMENT, InputArgument::REQUIRED, 'IP Addresses (csv)');
+    if(strpos($csvIpAddresses,",") !== false){
+      $ipAddresses = explode(",",$csvIpAddresses);
+      $matches = CampusGeoIP::findMatches($ipAddresses);
+    }
+    else{
+      $matches = CampusGeoIP::findMatch($csvIpAddresses);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $csvIpAddresses = $input->getArgument(self::IP_ARGUMENT);
-				
-        if(strpos($csvIpAddresses,",") !== false){
-            $ipAddresses = explode(",",$csvIpAddresses);
-            $matches = CampusGeoIP::findMatches($ipAddresses);
-        }
-        else{
-            $matches = CampusGeoIP::findMatch($csvIpAddresses);
-        }
-
-        $output->write(print_r($matches,true));
-    }
+    $output->write(print_r($matches,true));
+  }
 }
