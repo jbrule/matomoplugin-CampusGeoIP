@@ -17,23 +17,23 @@ use Piwik\Plugins\CampusGeoIP\CampusGeoIP;
 
 class TestAgainstVisitLog extends ConsoleCommand
 {
-    
-    const LIMIT_ARGUMENT = "limit";
   
-    protected function configure()
-    {
-        $this->setName('campusgeoip:test-against-visit-log');
-        $this->setDescription('Harvests IPs from visitor log and tests them against resolver database.');
-        $this->addArgument(self::LIMIT_ARGUMENT, InputArgument::REQUIRED, 'Match Limit:');
-    }
+  const LIMIT_ARGUMENT = "limit";
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-		$campusGeoIp = new CampusGeoIP();
-		$campusGeoIp->setOutput($output);
-		
-        $limit = $input->getArgument(self::LIMIT_ARGUMENT);
-		
-		$campusGeoIp->testAgainstVisitLog($limit);
-    }
+  protected function configure()
+  {
+    $this->setName('campusgeoip:test-against-visit-log');
+    $this->setDescription('Harvests IPs from visitor log and tests them against resolver database.');
+    $this->addArgument(self::LIMIT_ARGUMENT, InputArgument::REQUIRED, 'Match Limit:');
+  }
+
+  protected function execute(InputInterface $input, OutputInterface $output)
+  {
+    $campusGeoIp = new CampusGeoIP();
+    $campusGeoIp->setOutput($output);
+    
+    $limit = $input->getArgument(self::LIMIT_ARGUMENT);
+    
+    $campusGeoIp->testAgainstVisitLog($limit);
+  }
 }

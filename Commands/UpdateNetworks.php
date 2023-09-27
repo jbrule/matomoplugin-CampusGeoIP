@@ -17,24 +17,24 @@ use Piwik\Plugins\CampusGeoIP\CampusGeoIP;
 
 class UpdateNetworks extends ConsoleCommand
 {
-    const IMPORTLOCATION_ARGUMENT = "import-location";
+  const IMPORTLOCATION_ARGUMENT = "import-location";
 
-    protected function configure()
-    {
-        $this->setName('campusgeoip:update-networks');
-        $this->setDescription('UpdateNetworks');
-        $this->addArgument(self::IMPORTLOCATION_ARGUMENT, InputArgument::REQUIRED, 'Import Location (path to networks data file):');
-    }
+  protected function configure()
+  {
+    $this->setName('campusgeoip:update-networks');
+    $this->setDescription('UpdateNetworks');
+    $this->addArgument(self::IMPORTLOCATION_ARGUMENT, InputArgument::REQUIRED, 'Import Location (path to networks data file):');
+  }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-		$campusGeoIp = new CampusGeoIP();
-		$campusGeoIp->setOutput($output);
-		
-        $importLocation = $input->getArgument(self::IMPORTLOCATION_ARGUMENT);
-        
-        $output->writeln("Importing From: $importLocation");
-		
-		$campusGeoIp->importNetworksFromSource($importLocation);
-    }
+  protected function execute(InputInterface $input, OutputInterface $output)
+  {
+    $campusGeoIp = new CampusGeoIP();
+    $campusGeoIp->setOutput($output);
+    
+    $importLocation = $input->getArgument(self::IMPORTLOCATION_ARGUMENT);
+    
+    $output->writeln("Importing From: $importLocation");
+    
+    $campusGeoIp->importNetworksFromSource($importLocation);
+  }
 }
