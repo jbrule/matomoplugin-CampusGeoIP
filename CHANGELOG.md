@@ -1,7 +1,7 @@
 ## Changelog
 
 # 4.1.5
-Fixed network import bugs
+Increased region length from 2 to 4 chars to support international regions. Thank you @rockyluke
 
 # 4.1.4
 Fixed network import bugs
