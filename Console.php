@@ -10,28 +10,28 @@ namespace Piwik\Plugins\CampusGeoIP;
 
 class Console {
     
-    private $output = null;
-    private $outputSet = false;
-    
-    public function __construct(){
-    }
-    
-    public function setOutput($output){
-        $this->output = $output;
-        $this->outputSet = true;
-    }
-    
-    public function write($message, $newLine = true){
-        if($this->outputSet){
-            $message = is_string($message)? $message : print_r($message,true);
+  private $output = null;
+  private $outputSet = false;
+  
+  public function __construct(){
+  }
+  
+  public function setOutput($output){
+    $this->output = $output;
+    $this->outputSet = true;
+  }
+  
+  public function write($message, $newLine = true){
+    if($this->outputSet){
+      $message = is_string($message)? $message : print_r($message,true);
 
-			if($newLine){
-				$this->output->writeln(PHP_EOL.$message);
-			}
-			else
-			{
-				$this->output->write($message);
-			}
-        }
+      if($newLine){
+        $this->output->writeln(PHP_EOL.$message);
+      }
+      else
+      {
+        $this->output->write($message);
+      }
     }
+  }
 }

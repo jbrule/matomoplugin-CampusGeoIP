@@ -10,33 +10,33 @@ namespace Piwik\Plugins\CampusGeoIP;
 
 class Network {
     
-    public $ip;
-    public $cidr;
-    public $city;
-    public $campus;
-    public $region;
-    public $country;
-    public $org;
-    public $provider;
-    public $latitude;
-    public $longitude;
-    public $building;
-    public $floor;
-    public $note;
-    public $use;
-    public $disabled;
-    public $ts_created;
-    public $ts_last_edit;
-    
-    public function __construct($networkData = []){
+  public $ip;
+  public $cidr;
+  public $city;
+  public $campus;
+  public $region;
+  public $country;
+  public $org;
+  public $provider;
+  public $latitude;
+  public $longitude;
+  public $building;
+  public $floor;
+  public $note;
+  public $use;
+  public $disabled;
+  public $ts_created;
+  public $ts_last_edit;
+  
+  public function __construct($networkData = []){
 
-        foreach($networkData as $k => $v){
-            $this->{$k} = $v;
-        }
-        
+    foreach($networkData as $k => $v){
+      $this->{$k} = $v;
     }
     
-    public function isValid(){
-        return ($this->cidr !== null);
-    }
+  }
+  
+  public function isValid(){
+    return ($this->cidr !== null);
+  }
 }

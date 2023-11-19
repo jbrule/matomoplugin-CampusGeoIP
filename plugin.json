@@ -1,19 +1,19 @@
 {
-    "name": "CampusGeoIP",
-    "description": "This location provider is designed to geolocate ips across a campus in an intranet type environment",
-    "version": "4.1.4",
-    "theme": false,
-    "require": {
-        "matomo": ">=4.0.0-b1,<5.0.0-b1"
-    },
-    "authors": [
-        {
-            "name": "Josh Brule",
-            "email": "",
-            "homepage": "https:\/\/github.com\/jbrule\/"
-        }
-    ],
-    "homepage": "https:\/\/github.com\/jbrule\/matomoplugin-CampusGeoIP",
-    "license": "GPL v3+",
-    "keywords": ["geoip","locations","intranet","custom networks"]
+  "name": "CampusGeoIP",
+  "description": "This location provider is designed to geolocate ips across a campus in an intranet type environment",
+  "version": "4.1.5",
+  "theme": false,
+  "require": {
+    "matomo": ">=4.0.0-b1,<5.0.0-b1"
+  },
+  "authors": [
+    {
+      "name": "Josh Brule",
+      "email": "",
+      "homepage": "https:\/\/github.com\/jbrule\/"
+    }
+  ],
+  "homepage": "https:\/\/github.com\/jbrule\/matomoplugin-CampusGeoIP",
+  "license": "GPL v3+",
+  "keywords": ["geoip","locations","intranet","custom networks"]
 }
