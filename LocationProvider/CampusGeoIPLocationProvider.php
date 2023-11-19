@@ -43,14 +43,14 @@ class CampusGeoIPLocationProvider extends LocationProvider
     
     // If network match not valid try fallback lookup
 
-	  // First try the fallback provider
-	  $settings = new \Piwik\Plugins\CampusGeoIP\SystemSettings();
-	  $fallback = $settings->useFallback->getValue();
-	  if($fallback && $fallback!=='default'){
+    // First try the fallback provider
+    $settings = new \Piwik\Plugins\CampusGeoIP\SystemSettings();
+    $fallback = $settings->useFallback->getValue();
+    if($fallback && $fallback!=='default'){
       $provider = $this->getProviderById($fallback);
       return $provider->getLocation($info);	
     }
-		
+
     // All Location Lookup Failed 
     // Return unpopulated location,
     $location = [];

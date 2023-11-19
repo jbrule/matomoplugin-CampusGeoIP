@@ -23,35 +23,35 @@ use Piwik\Validators\NotEmpty;
 class SystemSettings extends \Piwik\Settings\Plugin\SystemSettings
 {
 
-	/** @var Setting */
-	public $useFallback;
-	
-	protected $fallbackOptions = [];
+  /** @var Setting */
+  public $useFallback;
+  
+  protected $fallbackOptions = [];
 
-	protected function init()
-	{
-		$this->title = ' Campus Geo IP';
+  protected function init()
+  {
+    $this->title = ' Campus Geo IP';
 
-		$geoIpAdminEnabled = UserCountry::isGeoLocationAdminEnabled();
-		$this->fallbackOptions['default'] = 'Default';
-	
-		foreach(LocationProvider::getAvailableProviders() as $provider){
-			$info = $provider->getInfo();
-			if ($info['id']!=='campusgeoip'
-				&& $info['id']!==DefaultProvider::ID
-				&& $info['id']!==DisabledProvider::ID
-				&& $provider->isWorking()===true) {
-				$this->fallbackOptions[$info['id']] = $info['title'];
-			}
-		}
-		if (count($this->fallbackOptions) > 0 ){
-			$this->useFallback = $this->makeSetting('fallback', 'default', FieldConfig::TYPE_STRING, function (FieldConfig $field) {
-				$field->title = 'Fallback location provider';
-				$field->uiControl = FieldConfig::UI_CONTROL_RADIO;
-				$field->availableValues = $this->fallbackOptions;
-				$field->description = 'Choose an alternative location provider if the IP address was not found in campus range.';
-			});
-			$this->useFallback->setIsWritableByCurrentUser($geoIpAdminEnabled);
-		}
-	}
+    $geoIpAdminEnabled = UserCountry::isGeoLocationAdminEnabled();
+    $this->fallbackOptions['default'] = 'Default';
+  
+    foreach(LocationProvider::getAvailableProviders() as $provider){
+      $info = $provider->getInfo();
+      if ($info['id']!=='campusgeoip'
+        && $info['id']!==DefaultProvider::ID
+        && $info['id']!==DisabledProvider::ID
+        && $provider->isWorking()===true) {
+        $this->fallbackOptions[$info['id']] = $info['title'];
+      }
+    }
+    if (count($this->fallbackOptions) > 0 ){
+      $this->useFallback = $this->makeSetting('fallback', 'default', FieldConfig::TYPE_STRING, function (FieldConfig $field) {
+        $field->title = 'Fallback location provider';
+        $field->uiControl = FieldConfig::UI_CONTROL_RADIO;
+        $field->availableValues = $this->fallbackOptions;
+        $field->description = 'Choose an alternative location provider if the IP address was not found in campus range.';
+      });
+      $this->useFallback->setIsWritableByCurrentUser($geoIpAdminEnabled);
+    }
+  }
 }
