@@ -1,5 +1,8 @@
 ## Changelog
 
+# 4.1.6
+Added Geolocation Provider fallback support. Thank you  @tsgeolu
+
 # 4.1.5
 Increased region length from 2 to 4 chars to support international regions. Thank you @rockyluke
 

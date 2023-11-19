@@ -10,6 +10,7 @@ Custom Geo IP resolver that was designed to resolve private IP space across many
 * Includes bulk IP resolution API
 * Includes a testing function that harvests IPs from vistor log
 * GeoIP database resides in MySQL/MariaDB
+* Fallback support (added by @tsgeolu)
 
 ## Install Instructions
 The easiest way to install is to find the plugin in the [Matomo Marketplace](https://plugins.matomo.org/).
