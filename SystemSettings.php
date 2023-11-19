@@ -23,18 +23,18 @@ use Piwik\Validators\NotEmpty;
 class SystemSettings extends \Piwik\Settings\Plugin\SystemSettings
 {
 
-    /** @var Setting */
-    public $useFallback;
+	/** @var Setting */
+	public $useFallback;
 	
 	protected $fallbackOptions = [];
 
-    protected function init()
-    {
-        $this->title = ' Campus Geo IP';
+	protected function init()
+	{
+		$this->title = ' Campus Geo IP';
 
-        $geoIpAdminEnabled = UserCountry::isGeoLocationAdminEnabled();
+		$geoIpAdminEnabled = UserCountry::isGeoLocationAdminEnabled();
 		$this->fallbackOptions['default'] = 'Default';
-		
+	
 		foreach(LocationProvider::getAvailableProviders() as $provider){
 			$info = $provider->getInfo();
 			if ($info['id']!=='campusgeoip'
@@ -53,7 +53,5 @@ class SystemSettings extends \Piwik\Settings\Plugin\SystemSettings
 			});
 			$this->useFallback->setIsWritableByCurrentUser($geoIpAdminEnabled);
 		}
-
-    }
-
+	}
 }
