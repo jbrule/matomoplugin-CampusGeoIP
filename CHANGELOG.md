@@ -1,5 +1,11 @@
 ## Changelog
- 
+
+# 5.0.2
+Fixed plugin.json version
+
+# 5.0.1
+Added resolve-network-range feature
+
 # 5.0.0
 Matomo 5.x compatibility
 

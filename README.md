@@ -8,6 +8,7 @@ Custom Geo IP resolver that was designed to resolve private IP space across many
 * Supports custom IP networks
 * IPv6 ready (not production tested)
 * Includes bulk IP resolution API
+* Includes CIDR range resolver
 * Includes a testing function that harvests IPs from vistor log
 * GeoIP database resides in MySQL/MariaDB
 * Fallback support (added by @tsgeolu)

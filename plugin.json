@@ -1,7 +1,7 @@
 {
   "name": "CampusGeoIP",
   "description": "This location provider is designed to geolocate ips across a campus in an intranet type environment",
-  "version": "5.0.0",
+  "version": "5.0.2",
   "theme": false,
   "require": {
     "matomo": ">=5.0.0-b1,<6.0.0-b1"
