@@ -207,6 +207,26 @@ class CampusGeoIP extends \Piwik\Plugin
     $this->markRemoved($importTime);
   }
 
+  public function resolveNetworkRanges(){
+    //Queries database for network entries with cidr and NULL ranges and resolves the ranges.
+
+    $querySelect = sprintf("SELECT n.cidr FROM %s n WHERE n.network_start IS NULL AND n.network_end IS NULL AND n.cidr IS NOT NULL", Common::prefixTable(self::TBL_NETWORKS));
+    $rangeless_networks = Db::fetchAll($querySelect);
+
+    $cidrs = array_map(function($row){ return $row["cidr"];},$rangeless_networks);
+
+    foreach($cidrs as $cidr){
+      $queryUpdate = sprintf("UPDATE %s SET network_start = ?, network_end = ? WHERE cidr = ? AND network_start IS NULL AND network_end IS NULL",Common::prefixTable(self::TBL_NETWORKS));
+	
+      list($network_start, $network_end) = IPUtils::getIPRangeBounds($cidr);
+      Db::query($queryUpdate, [$network_start,$network_end,$cidr]);                                                                                             
+                                                                                                                                                                                                   
+      $message = sprintf("Resolved ranges for %s",$cidr);                                                                                                           
+                                                                                                                                                                                                   
+      $this->console->write($message);  
+    }
+  }
+
   public function testAgainstVisitLog($limit = 1){
 
     $limit = intval($limit);
