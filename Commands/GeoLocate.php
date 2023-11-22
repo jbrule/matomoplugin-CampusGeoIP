@@ -9,10 +9,6 @@
 namespace Piwik\Plugins\CampusGeoIP\Commands;
 
 use Piwik\Plugin\ConsoleCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Output\OutputInterface;
 use Piwik\Plugins\CampusGeoIP\CampusGeoIP;
 
 class GeoLocate extends ConsoleCommand
@@ -24,11 +20,14 @@ class GeoLocate extends ConsoleCommand
   {
     $this->setName('campusgeoip:geolocate');
     $this->setDescription('Geo Locate IP Addresses (comma seperated)');
-    $this->addArgument(self::IP_ARGUMENT, InputArgument::REQUIRED, 'IP Addresses (csv)');
+    $this->addRequiredArgument(self::IP_ARGUMENT, 'IP Addresses (csv)');
   }
 
-  protected function execute(InputInterface $input, OutputInterface $output)
+  protected function doExecute(): int
   {
+    $input  = $this->getInput();
+    $output = $this->getOutput();
+
     $csvIpAddresses = $input->getArgument(self::IP_ARGUMENT);
     
     if(strpos($csvIpAddresses,",") !== false){
@@ -38,7 +37,9 @@ class GeoLocate extends ConsoleCommand
     else{
       $matches = CampusGeoIP::findMatch($csvIpAddresses);
     }
-
+    
     $output->write(print_r($matches,true));
+
+    return self::SUCCESS;
   }
 }

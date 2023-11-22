@@ -9,10 +9,6 @@
 namespace Piwik\Plugins\CampusGeoIP\Commands;
 
 use Piwik\Plugin\ConsoleCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Output\OutputInterface;
 use Piwik\Plugins\CampusGeoIP\CampusGeoIP;
 
 class UpdateNetworks extends ConsoleCommand
@@ -23,11 +19,14 @@ class UpdateNetworks extends ConsoleCommand
   {
     $this->setName('campusgeoip:update-networks');
     $this->setDescription('UpdateNetworks');
-    $this->addArgument(self::IMPORTLOCATION_ARGUMENT, InputArgument::REQUIRED, 'Import Location (path to networks data file):');
+    $this->addRequiredArgument(self::IMPORTLOCATION_ARGUMENT, 'Import Location (path to networks data file):');
   }
 
-  protected function execute(InputInterface $input, OutputInterface $output)
+  protected function doExecute(): int
   {
+    $input  = $this->getInput();
+    $output = $this->getOutput();
+
     $campusGeoIp = new CampusGeoIP();
     $campusGeoIp->setOutput($output);
     
@@ -36,5 +35,7 @@ class UpdateNetworks extends ConsoleCommand
     $output->writeln("Importing From: $importLocation");
     
     $campusGeoIp->importNetworksFromSource($importLocation);
+
+    return self::SUCCESS;
   }
 }

@@ -1,4 +1,7 @@
 ## Changelog
+ 
+# 5.0.0
+Matomo 5.x compatibility
 
 # 4.1.6
 Added Geolocation Provider fallback support. Thank you  @tsgeolu

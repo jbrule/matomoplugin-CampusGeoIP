@@ -9,10 +9,6 @@
 namespace Piwik\Plugins\CampusGeoIP\Commands;
 
 use Piwik\Plugin\ConsoleCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Output\OutputInterface;
 use Piwik\Plugins\CampusGeoIP\CampusGeoIP;
 
 class TestAgainstVisitLog extends ConsoleCommand
@@ -24,16 +20,21 @@ class TestAgainstVisitLog extends ConsoleCommand
   {
     $this->setName('campusgeoip:test-against-visit-log');
     $this->setDescription('Harvests IPs from visitor log and tests them against resolver database.');
-    $this->addArgument(self::LIMIT_ARGUMENT, InputArgument::REQUIRED, 'Match Limit:');
+    $this->addRequiredArgument(self::LIMIT_ARGUMENT, 'Match Limit:');
   }
 
-  protected function execute(InputInterface $input, OutputInterface $output)
+  protected function doExecute(): int
   {
+    $input  = $this->getInput();
+    $output = $this->getOutput();
+
     $campusGeoIp = new CampusGeoIP();
     $campusGeoIp->setOutput($output);
     
     $limit = $input->getArgument(self::LIMIT_ARGUMENT);
     
     $campusGeoIp->testAgainstVisitLog($limit);
+
+    return self::SUCCESS;
   }
 }

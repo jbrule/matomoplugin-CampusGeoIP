@@ -32,3 +32,4 @@ Pull Requests are welcome if you would like to implement these features
 * Clean implementation that includes building and floor in reports
 * Configurable network data parser
 * GUI for managing locations and networks
+* Generate network_start, network_end for cidr database entries with NULL values
