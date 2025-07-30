@@ -23,7 +23,7 @@ NetworkFirstAsInteger|NetworkLastAsInteger|NetworkAsInteger|NetworkWithCIDR|Netw
 167772160|167772415|167772160|10.0.0.0/24|10.0.0.0|24|255.255.255.0|256|My Network Comment|Region Name|CA|BA|01||false
 167816704|167816959|167816704|10.0.174.0/24|10.0.174.0|24|255.255.255.0|256|My Network Comment 2|Region Name|CA|BA|03||false
 ```
-There is a [networks-example.txt](./networks-example.txt) file available for reference
+There is a [networks-example.txt](https://github.com/jbrule/matomoplugin-CampusGeoIP/blob/5.x-dev/docs/networks-example.txt) file available for reference
 
 The following fields are the only ones parsed. The plugin was written against this format because it was what our IPAM delivers. Ideally this would be configurable. Pull Requests welcome.
 ["cidr"=>3,"note"=>8,"region"=>9,"campus"=>10,"building"=>11,"floor"=>12,"use"=>13,"disabled"=>14]
