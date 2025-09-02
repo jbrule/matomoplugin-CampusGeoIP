@@ -8,7 +8,7 @@ Upon install this plugin creates two table in the database
 ### Locations (Campuses)
 * ```campusgeoip_locations``` - this table needs to be populated directly (Sequel Ace, phpMyAdmin) as there is no UI built to do that. ![Locations Table](/screenshots/locations.png)
 
-Sample location data is available in [location-test-data.sql](./location-test-data.sql). This data is a match for the networks-example.txt network data provided later.
+Sample location data is available in [location-test-data.sql](https://github.com/jbrule/matomoplugin-CampusGeoIP/blob/5.x-dev/docs/location-test-data.sql). This data is a match for the networks-example.txt network data provided later.
 
 ### Networks
 * ```campusgeoip_networks``` - this table is populated and maintained using the following console command  ```./console campusgeoip:update-networks http://<yournetworkdata>``` to load from web or ```./console campusgeoip:update-networks ./networks-data.txt``` to load from a local file.
