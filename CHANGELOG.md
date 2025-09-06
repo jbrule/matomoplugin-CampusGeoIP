@@ -1,5 +1,9 @@
 ## Changelog
 
+
+# 5.0.3
+Documentation fixes by @textagroup
+
 # 5.0.2
 Fixed plugin.json version
 
