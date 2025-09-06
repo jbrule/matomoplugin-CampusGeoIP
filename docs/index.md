@@ -8,7 +8,7 @@ Upon install this plugin creates two table in the database
 ### Locations (Campuses)
 * ```campusgeoip_locations``` - this table needs to be populated directly (Sequel Ace, phpMyAdmin) as there is no UI built to do that. ![Locations Table](/screenshots/locations.png)
 
-Sample location data is available in [location-test-data.sql](./location-test-data.sql). This data is a match for the networks-example.txt network data provided later.
+Sample location data is available in [location-test-data.sql](https://github.com/jbrule/matomoplugin-CampusGeoIP/blob/5.x-dev/docs/location-test-data.sql). This data is a match for the networks-example.txt network data provided later.
 
 ### Networks
 * ```campusgeoip_networks``` - this table is populated and maintained using the following console command  ```./console campusgeoip:update-networks http://<yournetworkdata>``` to load from web or ```./console campusgeoip:update-networks ./networks-data.txt``` to load from a local file.
@@ -23,7 +23,7 @@ NetworkFirstAsInteger|NetworkLastAsInteger|NetworkAsInteger|NetworkWithCIDR|Netw
 167772160|167772415|167772160|10.0.0.0/24|10.0.0.0|24|255.255.255.0|256|My Network Comment|Region Name|CA|BA|01||false
 167816704|167816959|167816704|10.0.174.0/24|10.0.174.0|24|255.255.255.0|256|My Network Comment 2|Region Name|CA|BA|03||false
 ```
-There is a [networks-example.txt](./networks-example.txt) file available for reference
+There is a [networks-example.txt](https://github.com/jbrule/matomoplugin-CampusGeoIP/blob/5.x-dev/docs/networks-example.txt) file available for reference
 
 The following fields are the only ones parsed. The plugin was written against this format because it was what our IPAM delivers. Ideally this would be configurable. Pull Requests welcome.
 ["cidr"=>3,"note"=>8,"region"=>9,"campus"=>10,"building"=>11,"floor"=>12,"use"=>13,"disabled"=>14]
